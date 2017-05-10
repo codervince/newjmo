@@ -1,0 +1,36 @@
+
+//MEETING SPECIFIC TODAY
+Any HKJC OWNED horses?
+
+
+db.getCollection('runners').find({"therace.hkjc_results_url": /.*20170510.*/, "owner": /.*HKJC.*/})
+
+
+
+//RACE SPECIDIC
+//filter by racenumber
+db.getCollection('runners').find({"therace.racenumber": 2})
+//and sort by prizemoney
+db.getCollection('runners').find({"therace.racenumber": 2}).sort({seasonstakes:-1})
+
+
+//https://github.com/gpawade/wiki/wiki/DB---Mongodb-Cheat-sheet
+
+//GROUP BY RACE order byrace
+db.getCollection('runners').aggregate([
+{"$group" : {_id:"$therace.racenumber", count:{$sum:1}}},
+{ $sort : { therace.racenumber : 1, horsenumber: 1 } }
+])
+
+
+//group by multiple cols
+db.BusinessProcess.aggregate( {"$group" :  {_id : {status:"$status", type: "$type"}, count : { $sum : 1} } } )
+
+
+db.getCollection('runners').find( { $orderby: { therace.racenumber : 1 } } )
+
+
+raceno:"$therace.racenumber"
+
+//further info
+https://docs.mongodb.com/v3.0/reference/operator/meta/orderby/
